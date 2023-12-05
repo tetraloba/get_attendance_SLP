@@ -81,10 +81,33 @@ while true; do
     if [ "$str" != "$pre_str" ]; then
         echo $str; \
         pre_str=$str; \
-    sleep 1; \
     fi;
+    sleep 1; \
 done;
 
 
-pre_str=`cat ./attendance_system/data.json|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;while true;do str=`cat ./attendance_system/data.json|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;if [ "$str" != "$pre_str" ];then echo $str;pre_str=$str;sleep 1;fi;done;
+pre_str=`cat ./attendance_system/data.json|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;while true;do str=`cat ./attendance_system/data.json|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;if [ "$str" != "$pre_str" ];then echo $str;pre_str=$str;fi;sleep 1;done;
 
+ssh kbit01@133.92.145.205 'pre_str=`cat ./attendance_system/data.json|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;while true;do str=`cat ./attendance_system/data.json|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;if [ "$str" != "$pre_str" ];then echo $str;pre_str=$str;fi;sleep 1;done;' >> tmp.txt
+
+t="attendance_system/data.json"; \
+p=`date -r $t +%d%H%M%S`; \
+while true; do
+    c=`date -r $t +%d%H%M%S`; \
+    if [ "$c" != "$p" ]; then
+        echo `cat $t | tail -n 4 | head -n 2 | tr "\n" " " | cut -b 19-27,50-70`; \
+        p=$s; \
+    fi;
+    sleep 2; \
+done;
+
+
+t="attendance_system/data.json";p=`date -r $t +%d%H%M%S`;while true;do c=`date -r $t +%d%H%M%S`;if [ "$c" != "$p" ];then echo `cat $t|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;p=$s;fi;sleep 2;done;
+
+t="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then echo `cat $t|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;p=$s;fi;sleep 2;done;
+
+ssh kbit01@133.92.145.205 't="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then echo `cat $t|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;p=$s;fi;sleep 2;done;' >> tmp.txt
+
+cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70
+
+ssh kbit01@133.92.145.205 't="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$s;fi;sleep 2;done;' >> tmp.txt

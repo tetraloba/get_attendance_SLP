@@ -96,7 +96,7 @@ while true; do
     c=`date -r $t +%d%H%M%S`; \
     if [ "$c" != "$p" ]; then
         echo `cat $t | tail -n 4 | head -n 2 | tr "\n" " " | cut -b 19-27,50-70`; \
-        p=$s; \
+        p=$c; \
     fi;
     sleep 2; \
 done;
@@ -106,8 +106,38 @@ t="attendance_system/data.json";p=`date -r $t +%d%H%M%S`;while true;do c=`date -
 
 t="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then echo `cat $t|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;p=$s;fi;sleep 2;done;
 
-ssh kbit01@133.92.145.205 't="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then echo `cat $t|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;p=$s;fi;sleep 2;done;' >> tmp.txt
+ssh kbit01@133.92.145.205 't="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then echo `cat $t|tail -n 4|head -n 2|tr "\n" " "|cut -b 19-27,50-70`;p=$c;fi;sleep 2;done;' >> tmp.txt
 
 cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70
 
-ssh kbit01@133.92.145.205 't="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$s;fi;sleep 2;done;' >> tmp.txt
+ssh kbit01@133.92.145.205 't="attendance_system/data.json";d="+%d%H%M%S";p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ "$c" != "$p" ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;' >> tmp.txt
+
+
+# クライアント側でリアルタイムに表示する用
+t="tmp.txt"; \
+p=`date -r $t +%d%H%M%S`; \
+while true; do
+    c=`date -r $t +%d%H%M%S`; \
+    if [ "$c" != "$p" ]; then
+        echo `cat $t | tail -n 1`; \
+        p=$c; \
+    fi;
+    sleep 2; \
+done;
+
+t="tmp.txt";p=`date -r $t +%d%H%M%S`;while true;do c=`date -r $t +%d%H%M%S`;if [ "$c" != "$p" ];then echo `cat $t | tail -n 1`;p=$c;fi;sleep 2;done;
+
+
+t=tmp.txt;p=`date -r $t +%d%H%M%S`;while true;do c=`date -r $t +%d%H%M%S`;if [ $c != $p ];then cat $t | tail -n 1;p=$c;fi;sleep 2;done;
+t=tmp.txt;d=+%d%H%M%S;p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ $c != $p ];then cat $t | tail -n 1;p=$c;fi;sleep 2;done;
+# 現状最短
+t=tmp.txt;d="date -r $t +%d%H%M%S";p=`$d`;while true;do c=`$d`;if [ $c != $p ];then cat $t|tail -n 1;p=$c;fi;sleep 2;done;
+
+
+# SSH接続してログ抜き出してくるやつ
+ssh kbit01@133.92.145.205 't=attendance_system/data.json;d=+%d%H%M%S;p=`date -r $t $d`;while true;do c=`date -r $t $d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;' >> tmp.txt
+
+t=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;
+
+# 現状最短
+ssh kbit01@133.92.145.205 't=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;' >> tmp.txt

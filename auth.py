@@ -1,0 +1,1 @@
+info = {'token':'PASTE_YOUR_TOKEN_HERE', 'channel_id':0000000000000000000}

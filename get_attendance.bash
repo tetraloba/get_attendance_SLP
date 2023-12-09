@@ -141,3 +141,49 @@ t=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do c=`$
 
 # 現状最短
 ssh kbit01@133.92.145.205 't=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;' >> tmp.txt
+
+# SSH切断を検出して自動終了する
+t=attendance_system/data.json;
+d="date -r $t +%d%H%M%S";
+i="ps h -p $$ -o ppid";
+p=`$d`;
+f=`$i`;
+while true; do
+    if [ `$i` != $f ]; then
+        exit;
+    fi;
+    c=`$d`;
+    if [ $c != $p ]; then
+        cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;
+        p=$c;
+    fi;
+    sleep 2;
+done;
+
+t=attendance_system/data.json;d="date -r $t +%d%H%M%S";i="ps h -p $$ -o ppid";p=`$d`;f=`$i`;while true;do if [ `$i` != $f ];then;exit;fi;c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;
+
+t=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do if [ `ps h -p $$ -o ppid` == 1 ];then exit;fi;c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;
+
+#テスト用
+while true;do if [ `ps h -p $$ -o ppid` == 1 ];then exit;fi;date >> tmp.txt;sleep 2;done;
+
+
+bash -c 't=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do if [ `ps h -p $$ -o ppid` == 1 ];then exit;fi;c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;read -t 2 l;if [ -n "$l" ];then exit;fi;done;'
+
+t=attendance_system/data.json;
+d="date -r $t +%d%H%M%S";
+p=`$d`;
+while true;do 
+    if [ `ps h -p $$ -o ppid` == 1 ];then 
+        exit;
+    fi;
+    c=`$d`;
+    if [ $c != $p ];then 
+        cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;
+        p=$c;
+    fi;
+    read -t 2 l;
+    if [ -n "$l" ];then 
+        exit;
+    fi;
+done;

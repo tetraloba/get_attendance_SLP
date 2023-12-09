@@ -6,8 +6,8 @@ import discord
 
 import auth
 
-token = auth.info['token']
-channel_id = auth.info['channel_id']
+token = auth.discord_info['token']
+channel_id = auth.discord_info['channel_id']
 
 file_path = None
 pre_mtime = None

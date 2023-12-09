@@ -187,3 +187,20 @@ while true;do
         exit;
     fi;
 done;
+
+bash -c 't=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do if [ `ps h -p $$ -o ppid` == 1 ];then exit;fi;c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;read -t 2&&exit;done;'
+
+t=attendance_system/data.json;
+d="date -r $t +%d%H%M%S";
+p=`$d`;
+while true;do 
+    if [ `ps h -p $$ -o ppid` == 1 ];then 
+        exit; # ppid が 1 なら終了 (SSHが切断された場合)
+    fi;
+    c=`$d`;
+    if [ $c != $p ];then 
+        cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;
+        p=$c;
+    fi;
+    read -t 2&&exit; # 2秒待機して入力が有った場合終了
+done;

@@ -12,7 +12,7 @@ PORT = ssh_info['port']
 USERNAME = ssh_info['user']
 PASSWORD = ssh_info['password']
 
-COMMAND = R'''bash -c 't=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do if [ `ps h -p $$ -o ppid` == 1 ];then exit;fi;c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;read -t 2 l;if [ -n "$l" ];then exit;fi;done;' '''
+COMMAND = R'''bash -c 't=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do if [ `ps h -p $$ -o ppid` == 1 ];then exit;fi;c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;read -t 2&&exit;done;' '''
 
 # "00A000","0000-00-00 00:00:00" にマッチ
 reg = re.compile(r'"\d{2}[A-Z]\d{3}","\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"')

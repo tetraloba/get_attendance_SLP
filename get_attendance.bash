@@ -204,3 +204,9 @@ while true;do
     fi;
     read -t 2&&exit; # 2秒待機して入力が有った場合終了
 done;
+
+
+
+p=`date -r attendance_system/data.json +%d%H%M%S`;while true;do c=`date -r attendance_system/data.json +%d%H%M%S`;if [ $c != $p ];then echo hello;p=$c;fi;sleep 2;done;
+
+'shopt -s huponexit;t=attendance_system/data.json;d="date -r $t +%d%H%M%S";p=`$d`;while true;do c=`$d`;if [ $c != $p ];then cat $t|tail -n 4|tr "\n" " "|cut -b 19-27,50-70;p=$c;fi;sleep 2;done;'
